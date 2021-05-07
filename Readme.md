@@ -65,6 +65,8 @@ Click on your messaging profile to edit it, paste the URL provided by NGROK copi
 
 To test the application, send an SMS message to phone number you purchased from Telnyx. 
 
+You should receive one of the responses below depending on the message you send.
+
 SMS Message|Response
 -------|--------
 `pizza`|Chicago pizza is the best
