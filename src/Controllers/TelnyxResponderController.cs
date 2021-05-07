@@ -30,18 +30,18 @@ namespace telnyx_responder.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(object message)
+        public async Task<IActionResult> Post(object messageBody)
         {
             // Deserialize incoming message
-            dynamic webhook = JsonConvert.DeserializeObject(message.ToString());
-            EventType eventType = ToEnum<EventType>(webhook.data.event_type.ToString());            
+            dynamic message = JsonConvert.DeserializeObject(messageBody.ToString());
+            EventType eventType = ToEnum<EventType>(message.data.event_type.ToString());            
 
             // Respond only to received messages, not status updates
             if (eventType == EventType.MessageReceived)
             {
                 // Determing how to repond to sender
                 string responseText;
-                switch (webhook.data.payload.text.ToString().ToLower())
+                switch (message.data.payload.text.ToString().ToLower())
                 {
                     case "pizza":
                         responseText = "Chicago pizza is the best";
@@ -55,8 +55,8 @@ namespace telnyx_responder.Controllers
                 }
 
                 // Create return message
-                string to = webhook.data.payload.to[0].phone_number;
-                string from = webhook.data.payload.from.phone_number;
+                string to = message.data.payload.to[0].phone_number;
+                string from = message.data.payload.from.phone_number;
                 TelnyxConfiguration.SetApiKey(TELNYX_API_KEY);
                 NewMessagingSenderId options = new NewMessagingSenderId
                 {
