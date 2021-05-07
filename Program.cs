@@ -20,7 +20,14 @@ namespace telnyx_responder
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureLogging((Action<WebHostBuilderContext, ILoggingBuilder>) ((hostingContext, logging) =>
+                    {
+                        logging.AddConfiguration((IConfiguration) hostingContext.Configuration.GetSection("Logging"));
+                        logging.AddConsole();
+                        logging.AddDebug();
+                        logging.AddEventSourceLogger();
+                    }));
+                    webBuilder.UseStartup<Startup>();                    
                 });
     }
 }
