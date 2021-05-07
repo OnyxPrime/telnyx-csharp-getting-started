@@ -32,11 +32,14 @@ namespace telnyx_responder.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(object message)
         {
+            // Deserialize incoming message
             dynamic webhook = JsonConvert.DeserializeObject(message.ToString());
             EventType eventType = ToEnum<EventType>(webhook.data.event_type.ToString());            
 
+            // Respond only to received messages, not status updates
             if (eventType == EventType.MessageReceived)
             {
+                // Determing how to repond to sender
                 string responseText;
                 switch (webhook.data.payload.text.ToString().ToLower())
                 {
@@ -50,16 +53,20 @@ namespace telnyx_responder.Controllers
                         responseText = "Please send either the word ‘pizza’ or ‘ice cream’ for a different response";
                         break;
                 }
+
+                // Create return message
                 string to = webhook.data.payload.to[0].phone_number;
                 string from = webhook.data.payload.from.phone_number;
                 TelnyxConfiguration.SetApiKey(TELNYX_API_KEY);
-                MessagingSenderIdService service = new MessagingSenderIdService();
                 NewMessagingSenderId options = new NewMessagingSenderId
                 {
                     From = to,
                     To = from,
                     Text = responseText
                 };
+                
+                // Send message back to sender
+                MessagingSenderIdService service = new MessagingSenderIdService();
                 try
                 {
                     MessagingSenderId messageResponse = await service.CreateAsync(options);
