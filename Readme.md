@@ -10,12 +10,12 @@ This repository is an example of how to receive and send SMS messages using Teln
 
 ## Setting up and running the application
 
-To get started, you'll first need to clone this repository
+To get started, you'll first need to clone this repository.
 
 ```
 git clone https://github.com/OnyxPrime/telnyx-csharp-getting-started.git
 ```
-Next, head over to the Telnyx portal and copy the API key for your account
+Next, head over to the Telnyx portal and copy the API key for your account.
 
 ![Telnyx portal API key page](./images/telnyx-dashboard-api-key.png)
 
@@ -28,7 +28,7 @@ Replace the placeholder value for the `TELNYX_API_KEY` in `appsettings.json` wit
 }
 ```
 
-Open up your favorite terminal, switch to the `src` directory under this repository, and run the following commands
+Open up your favorite terminal, switch to the `src` directory under this repository, and run the following commands:
 
 ```
 dotnet build
